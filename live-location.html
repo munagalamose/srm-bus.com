@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Location</title>
+</head>
+<body>
+    <button id="getLocation">Get Location</button>
+    <p id="locationData"></p>
+
+    <script>
+        document.getElementById('getLocation').addEventListener('click', function() {
+            if(navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                alert('Geolocation is not supported by this browser.');
+            }
+        });
+
+        function showPosition(position) {
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+            document.getElementById('locationData').innerHTML = 'Latitude: ' + latitude + '<br>Longitude: ' + longitude;
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'process_location.php', true);
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.send('latitude=' + latitude + '&longitude=' + longitude);
+        }
+    </script>
+</body>
+</html>
